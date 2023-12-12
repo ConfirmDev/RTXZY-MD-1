@@ -1,33 +1,38 @@
+
 let handler = async (m, { conn, isROwner, text }) => {
     const delay = time => new Promise(res => setTimeout(res, time))
+    
     let getGroups = await conn.groupFetchAllParticipating()
     let groups = Object.entries(getGroups).slice(0).map(entry => entry[1])
-    let anu = groups.map(v => v.id)
-    var pesan = m.quoted && m.quoted.text ? m.quoted.text : text
-    if(!pesan) throw 'teksnya?'
-    m.reply(`Mengirim Broadcast Ke ${anu.length} Chat, Waktu Selesai ${anu.length * 0.5 } detik`)
-    for (let i of anu) {
-    await delay(500)
-    conn.relayMessage(i, {
-extendedTextMessage:{
-                text: pesan, 
-                contextInfo: {
-                     externalAdReply: {
-                        title: wm,
-                        mediaType: 1,
-                        previewType: 0,
-                        renderLargerThumbnail: true,
-                        thumbnailUrl: 'https://telegra.ph/file/aa76cce9a61dc6f91f55a.jpg',
-                        sourceUrl: ''
-                    }
-                }, mentions: [m.sender]
-}}, {}).catch(_ => _)
+    let l = groups.map(v => v.id)
+
+    let q = m.quoted ? m.quoted : m
+    let mime = (q.msg || q).mimetype || ''
+    console.log(mime)
+    if (/image/.test(mime)) {
+        var media = await q.download()
     }
-  m.reply(`Sukses Mengirim Broadcast Ke ${anu.length} Group`)
+
+    var caption = q && q.text ? q.text : text
+    if(!caption) caption = ''
+
+    try {
+        for (let i of l) {
+            await delay(500)
+
+            if(media) await conn.sendFile(i, media, 'media.png', caption, false, {thumbnail: Buffer.alloc(0)})
+            else conn.relayMessage(i, {extendedTextMessage:{text: caption, }}, {}).catch(_ => _)
+
+            m.reply(`Sent Broadcast to ${l.length} Group`)
+        }
+
+    } catch (e) {
+        return `*Media does not support!*`
+    }
 }
-handler.help = ['bcgcbot <teks>']
+handler.help = ['bcgc <teks>']
 handler.tags = ['owner']
-handler.command = /^((broadcastgc|bcgc)bot)$/i
+handler.command = /^(broadcastgc|bcgc)$/i
 
 handler.owner = true
 

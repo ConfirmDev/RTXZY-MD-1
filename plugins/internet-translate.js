@@ -1,5 +1,5 @@
 const { translate } = require('@vitalets/google-translate-api');
-const defaultLang = 'id'
+const defaultLang = 'my'
 let handler = async (m, { args, usedPrefix, command }) => {
     if (!args[0] && !m.quoted) {
         throw `*• Example* :  ${usedPrefix}${command} id how are you`

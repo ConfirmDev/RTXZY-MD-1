@@ -4,7 +4,7 @@ let handler = async (m, {conn, text, usedPrefix}) => {
     var aud = `https://aemt.me/youtube?url=${text}&filter=audioonly&quality=highestaudio&contenttype=audio/mpeg` 
     await conn.sendMessage(m.chat, { audio: { url: aud }, mimetype: 'audio/mpeg' }, { quoted: m })    
   } catch (e) {
-    throw 'Video/Audio Tidak Ditemukan'
+    throw 'Link not found'
   }
 }
 handler.command = handler.help = ['ytaudio'];

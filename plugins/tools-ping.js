@@ -67,7 +67,7 @@ conn
         var cpuModel = cpux.model()
         
         var d = new Date(new Date + 3600000)
-        var locale = 'id'
+        var locale = 'my'
     var weeks = d.toLocaleDateString(locale, { weekday: 'long' })
     var dates = d.toLocaleDateString(locale, {
       day: 'numeric',

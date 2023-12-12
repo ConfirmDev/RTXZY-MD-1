@@ -6,7 +6,7 @@ let handler = async (m, {
 await conn.sendPresenceUpdate('composing', m.chat)
     var lama = 86400000 * 7
     const now = new Date().toLocaleString("en-US", {
-        timeZone: "Asia/Jakarta"
+        timeZone: "Asia/Kuala_Lumpur"
     });
     const milliseconds = new Date(now).getTime();
 
